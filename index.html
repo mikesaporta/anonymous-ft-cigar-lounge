@@ -24,7 +24,9 @@ ul{list-style:none}
 .t-eyebrow{font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--c-gold)}
 .t-display{font-family:var(--ff-display);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:300;line-height:1.05;letter-spacing:-.02em}
 .t-display em{font-style:italic;color:var(--c-gold)}
-.brand-mark{font-family:var(--ff-body);font-style:normal;font-weight:700;letter-spacing:.06em;background:linear-gradient(180deg,#f2f2f2 0%,#c9c9c9 45%,#8f8f8f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#c9c9c9;text-transform:uppercase;font-size:.62em;vertical-align:.06em;padding:0 .02em}
+.brand-mark{font-family:var(--ff-body);font-style:normal;font-weight:700;letter-spacing:.06em;background:linear-gradient(180deg,#f2f2f2 0%,#c9c9c9 45%,#8f8f8f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#c9c9c9;text-transform:uppercase;font-size:.62em;vertical-align:.06em;padding:0 .02em;-webkit-text-stroke:.5px rgba(255,255,255,.35);filter:drop-shadow(0 0 1px rgba(255,255,255,.25))}
+.brand-mark-row{display:inline-flex;align-items:center;gap:.28em;vertical-align:.02em}
+.brand-mark-logo{height:.68em;width:auto;display:inline-block;object-fit:contain;filter:drop-shadow(0 0 3px rgba(255,255,255,.15))}
 .t-title{font-family:var(--ff-display);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1.15}
 .t-title em{font-style:italic}
 .t-section-label{font-size:.65rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--c-text-dim)}
@@ -216,7 +218,7 @@ ul{list-style:none}
 <div class="hero-eyebrow">
 <div class="hero-eyebrow-pill">Эксклюзивное спонсорство</div>
 </div>
-<h1 class="t-display hero-title" id="hero-title"><span class="brand-mark">Anonymous</span><br><em>Cigar Smoking</em><br>Lounge Sponsor</h1>
+<h1 class="t-display hero-title" id="hero-title"><span class="brand-mark-row"><img src="images/anonymous-logo.jpeg" alt="" class="brand-mark-logo" /><span class="brand-mark">Anonymous</span></span><br><em>Cigar Smoking</em><br>Lounge Sponsor</h1>
 <p class="hero-desc">Сигарный лаунж — точка притяжения для гостей, которые ценят спокойную атмосферу, качественное общение и культуру сигар. Здесь можно сделать паузу между встречами, познакомиться с новыми людьми и провести время в расслабленном клубном ритме.</p>
 <div class="hero-cta-row">
 <a href="#constructor" class="btn-primary">Собрать интеграцию <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
