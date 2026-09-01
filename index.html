@@ -87,8 +87,8 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
   <div class="addons-grid">
     <article class="addon-card">
       <div class="addon-media">
-        <div class="addon-hero" data-addon-hero data-main-label="Заглавное фото" data-alt-label="Дополнительное фото"><span>Заглавное фото</span></div>
-        <div class="addon-thumbs"><button class="addon-thumb" type="button" data-addon-thumb aria-label="Показать дополнительное фото мобильного бара"><span>01</span></button></div>
+        <div class="addon-hero has-image" data-addon-hero data-main-label="Мобильный бар Anonymous" data-alt-label="Бармен Anonymous" data-main-image="images/mobile-bar.webp" data-alt-image="images/mobile-bartender.webp" role="img" aria-label="Мобильный бар Anonymous" style="background-image:url('images/mobile-bar.webp');background-position:center 70%"><span>Мобильный бар Anonymous</span></div>
+        <div class="addon-thumbs"><button class="addon-thumb has-image" type="button" data-addon-thumb aria-label="Показать фото бармена Anonymous" style="background-image:url('images/mobile-bartender.webp')"><span>01</span></button></div>
       </div>
       <div class="addon-body">
         <div class="addon-kicker">01 · Дополнительная опция</div>
@@ -174,7 +174,13 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
       hero.classList.toggle('is-alt', active);
       thumb.classList.toggle('is-active', active);
       thumb.setAttribute('aria-pressed', String(active));
-      hero.querySelector('span').textContent = active ? hero.dataset.altLabel : hero.dataset.mainLabel;
+      if (hero.dataset.mainImage && hero.dataset.altImage) {
+        hero.style.backgroundImage = `url('${active ? hero.dataset.altImage : hero.dataset.mainImage}')`;
+        hero.style.backgroundPosition = active ? 'center' : 'center 70%';
+        hero.setAttribute('aria-label', active ? hero.dataset.altLabel : hero.dataset.mainLabel);
+      }
+      const heroLabel = hero.querySelector('span');
+      if (heroLabel) heroLabel.textContent = active ? hero.dataset.altLabel : hero.dataset.mainLabel;
     });
     select?.addEventListener('click', () => {
       const selected = !card.classList.contains('is-selected');
