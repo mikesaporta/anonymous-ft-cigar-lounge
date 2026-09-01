@@ -141,7 +141,7 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
       <div class="cart-pdf">
         <b>PDF с вашей конфигурацией</b>
         <p>В документ попадут базовое спонсорство и выбранные опции.</p>
-        <button class="cart-pdf-btn" id="generatePdf" type="button">Сформировать PDF и отправить Михаилу →</button>
+        <button class="cart-pdf-btn" id="generatePdf" type="button">Сформировать PDF и поделиться →</button>
         <div class="pdf-status" id="pdfStatus" aria-live="polite"></div>
       </div>
     </aside>
@@ -324,10 +324,20 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
     const button = document.getElementById('generatePdf');
     const status = document.getElementById('pdfStatus');
     if (!button || !status) return;
+    const shareProbe = new File([''], 'configuration.pdf', { type: 'application/pdf' });
+    const supportsFileShare = Boolean(
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({ files: [shareProbe] })
+    );
+    const telegramWindow = supportsFileShare ? null : window.open('', '_blank');
+
     button.disabled = true;
     button.textContent = 'Формируем PDF…';
     status.className = 'pdf-status';
-    status.textContent = 'Собираем выбранную конфигурацию.';
+    status.textContent = supportsFileShare
+      ? 'Собираем PDF и открываем меню отправки.'
+      : 'Собираем PDF и открываем Telegram.';
     const sheet = buildPdfSheet();
 
     try {
@@ -354,14 +364,14 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
       const blob = pdf.output('blob');
       const file = new File([blob], filename, { type: 'application/pdf' });
 
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        status.textContent = 'PDF готов. Выберите Telegram и отправьте его Михаилу @FT_Mikhail.';
+      if (supportsFileShare) {
+        status.textContent = 'Выберите Telegram и чат Михаила @FT_Mikhail.';
         status.className = 'pdf-status ok';
         try {
           await navigator.share({
             files: [file],
             title: 'Anonymous Cigar Lounge Sponsorship',
-            text: 'Конфигурация спонсорства Anonymous для Михаила · FT Community.'
+            text: 'Конфигурация спонсорства Anonymous для Михаила · FT Community (@FT_Mikhail).'
           });
         } catch (error) {
           if (error?.name !== 'AbortError') throw error;
@@ -375,7 +385,12 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 5000);
-        status.innerHTML = 'PDF готов и скачан. <a href="https://t.me/FT_Mikhail" target="_blank" rel="noopener">Открыть Telegram Михаила →</a>';
+
+        if (telegramWindow) {
+          telegramWindow.opener = null;
+          telegramWindow.location.href = 'https://t.me/FT_Mikhail';
+        }
+        status.innerHTML = 'PDF скачан, чат Михаила открыт. Прикрепите файл в Telegram. <a href="https://t.me/FT_Mikhail" target="_blank" rel="noopener">Открыть чат повторно →</a>';
         status.className = 'pdf-status ok';
       }
     } catch (error) {
@@ -388,7 +403,7 @@ section{padding:76px 0}.title-row{display:flex;justify-content:space-between;ali
     } finally {
       sheet.remove();
       button.disabled = false;
-      button.textContent = 'Сформировать PDF и отправить Михаилу →';
+      button.textContent = 'Сформировать PDF и поделиться →';
     }
   }
 
